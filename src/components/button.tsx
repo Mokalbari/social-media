@@ -1,3 +1,5 @@
+"use client"
+
 import { signIn, signOut, useSession } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
@@ -15,6 +17,7 @@ export function SignInButton() {
           width={32}
           height={32}
           alt={session.user?.name || "Visitor"}
+          style={{ borderRadius: "50%" }}
         />
       </Link>
     )
@@ -24,5 +27,5 @@ export function SignInButton() {
 }
 
 export function SignOutButton() {
-  return <button onClick={() => signOut}>Sign Out</button>
+  return <button onClick={() => signOut()}>Sign Out</button>
 }
