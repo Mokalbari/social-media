@@ -1,4 +1,5 @@
 import { Post } from "@/lib/types/definitions"
+import { getServerSession } from "next-auth"
 import { NextResponse } from "next/server"
 
 const blogPosts: Post[] = [
@@ -35,5 +36,6 @@ const blogPosts: Post[] = [
 ]
 
 export async function GET() {
+  const session = await getServerSession()
   return NextResponse.json(blogPosts)
 }
