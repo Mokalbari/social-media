@@ -1,7 +1,15 @@
 import { BreadCrumb } from "@/components/breadcrumb"
 import { Post } from "@/lib/types/definitions"
 
+// revalidation de la page côté serveur toutes les 3600 secondes
 export const revalidate = 3600
+
+/* Cette fonction permet de générer au build toutes les pages fetch
+Cela améliore considérablement les performances et le SEO
+A utiliser uniquement pour des pages "statiques" avec peu de contenus personnalisé
+
+La revalidation n'est pas nécessaire mais montré ici pour la démo.
+*/
 
 export async function generateStaticParams() {
   const posts: Post[] = await fetch("http://localhost:3000/api/blog").then(
@@ -11,16 +19,16 @@ export async function generateStaticParams() {
 }
 
 export default async function Page({
-  params,
+  params, // params est un props spéciale de next
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }> // ce props est asynchrone
 }) {
-  const slug = (await params).slug
+  const slug = (await params).slug // important de faire un await du slug vu que c'est une promesse
   const posts: Post[] = await fetch("http://localhost:3000/api/blog", {
-    cache: "force-cache",
+    cache: "force-cache", // forcer en mémoire la data, redondant avec generateStaticParams
   }).then((res) => res.json())
 
-  const post = posts.find((post) => post.slug === slug)!
+  const post = posts.find((post) => post.slug === slug)! // force non null, mais privilégier un fallback
 
   return (
     <>

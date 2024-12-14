@@ -2,8 +2,13 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 
 export default async function Page() {
+  /* 
+    Il est possible de récupérer les informations d'authentification d'un utilisateur
+    dans un composant côté serveur grâce à ce hook
+    */
   const session = await getServerSession()
 
+  // Si la session n'existe pas, la page /dashboard est interdite d'accès et user est redirigé vers login
   if (!session) {
     redirect("/api/auth/signin")
   }
